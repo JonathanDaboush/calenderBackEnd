@@ -1,12 +1,14 @@
 package com.example.calenderBackEnd.User;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class UserServices {
+@Autowired
     UserRepository userRepository;
     public User getuserById(long id){
         return userRepository.getReferenceById(id);

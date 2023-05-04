@@ -1,5 +1,6 @@
 package com.example.calenderBackEnd.Event;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -7,7 +8,7 @@ import java.util.List;
 
 @Component
 public class EventServices {
-    EventRepository eventRepository;
+    @Autowired  EventRepository eventRepository;
     public Event geteventById(long id){
         return eventRepository.getReferenceById(id);
     }

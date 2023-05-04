@@ -3,6 +3,7 @@ package com.example.calenderBackEnd.Event;
 import com.example.calenderBackEnd.Category.Category;
 import com.example.calenderBackEnd.User.User;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "event")
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

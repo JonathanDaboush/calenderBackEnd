@@ -25,7 +25,7 @@ public class UserController {
 
         for(int i=0;i< users.size();i++){
             User user=users.get(i);
-            user.setEmail(jasyptConfig.encryptor().decrypt(user.getEmail()));
+           
             user.setPassword(jasyptConfig.encryptor().decrypt(user.getPassword()));
             users.set(i,user);
         }
@@ -34,24 +34,30 @@ public class UserController {
     }
 
     @GetMapping("getById/{id}")
-    public User getuser(@PathVariable Long id) throws  IOException {
+    public UserData getuser(@PathVariable Long id) throws  IOException {
         User user=userServices.getuserById(id);
-        user.setEmail(jasyptConfig.encryptor().decrypt(user.getEmail()));
+       
         user.setPassword(jasyptConfig.encryptor().decrypt(user.getPassword()));
-        return user;
+        UserData userData=new UserData();
+        userData.setPassword(user.getPassword());
+        userData.setEmail(user.getEmail());
+        return userData;
     }
     @GetMapping("/{email}/{password}")
-    public User getuser(@PathVariable String email,@PathVariable String password) throws  IOException {
-        User user=userServices.getusersByEmailPassword(jasyptConfig.encryptor().encrypt(email),jasyptConfig.encryptor().encrypt(password)).get(0);
-        user.setEmail(jasyptConfig.encryptor().decrypt(user.getEmail()));
-        user.setPassword(jasyptConfig.encryptor().decrypt(user.getPassword()));
-        return user;
+    public long getuser(@PathVariable String email,@PathVariable String password) throws  IOException {
+        User user=userServices.getusersByEmail(email).get(0);
+        String example=jasyptConfig.encryptor().decrypt(user.getPassword());
+        if(password.equals(jasyptConfig.encryptor().decrypt(user.getPassword()))){
+
+        return user.getId();}
+        return -1;
+
     }
     @GetMapping("getByEmail/{email}")
     public User getuser(@PathVariable String email) throws  IOException {
         try{
             User user=userServices.getusersByEmail(jasyptConfig.encryptor().encrypt(email)).get(0);
-            user.setEmail(jasyptConfig.encryptor().decrypt(user.getEmail()));
+           
             user.setPassword(jasyptConfig.encryptor().decrypt(user.getPassword()));
             return user;
         }
@@ -70,7 +76,7 @@ public class UserController {
 
         }
 
-        user.setEmail(jasyptConfig.encryptor().encrypt((String)payLoad.get("email")));
+        user.setEmail((String)payLoad.get("email"));
         user.setPassword(jasyptConfig.encryptor().encrypt((String)payLoad.get("password")));
         userServices.saveuser(user);
         return ResponseEntity.ok().build();

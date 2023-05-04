@@ -1,5 +1,6 @@
 package com.example.calenderBackEnd.Category;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -7,7 +8,8 @@ import java.util.List;
 
 @Component
 public class CategoryServices {
-    CategoryRepository categoryRepository;
+    @Autowired
+   CategoryRepository categoryRepository;
     public Category getcategoryById(long id){
         return categoryRepository.getReferenceById(id);
     }
