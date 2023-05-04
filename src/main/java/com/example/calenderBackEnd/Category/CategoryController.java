@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/category")
-@CrossOrigin
+@CrossOrigin("*")
 public class CategoryController {
     @GetMapping
     public List<Category> getcategorys() {
