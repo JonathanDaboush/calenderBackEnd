@@ -8,10 +8,11 @@ import java.util.List;
 
 @Component
 public class UserServices {
-@Autowired
+    @Autowired
     UserRepository userRepository;
     public User getuserById(long id){
-        return userRepository.getReferenceById(id);
+        User user=userRepository.findById(id).get();
+        return user;
     }
     public void saveuser(User user){
         userRepository.save(user);

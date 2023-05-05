@@ -1,5 +1,7 @@
 package com.example.calenderBackEnd.User;
 
+import com.example.calenderBackEnd.Event.Event;
+import com.example.calenderBackEnd.Event.EventServices;
 import com.example.calenderBackEnd.Util.JasyptConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ public class UserController {
     UserServices userServices;
     @Autowired
     JasyptConfig jasyptConfig;
+    @Autowired
+    EventServices eventServices;
     @GetMapping
     public List<User> getusers() {
 
@@ -88,4 +92,5 @@ public class UserController {
         userServices.removeuser(id);
         return ResponseEntity.ok().build();
     }
+
 }

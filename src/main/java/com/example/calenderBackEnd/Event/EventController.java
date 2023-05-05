@@ -3,6 +3,8 @@ package com.example.calenderBackEnd.Event;
 
 import com.example.calenderBackEnd.Category.Category;
 import com.example.calenderBackEnd.Category.CategoryServices;
+import com.example.calenderBackEnd.User.User;
+import com.example.calenderBackEnd.User.UserServices;
 import com.example.calenderBackEnd.Util.JasyptConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ public class EventController {
     JasyptConfig jasyptConfig;
     @Autowired
     CategoryServices categoryServices;
+    @Autowired
+    UserServices userServices;
     @GetMapping("/{id}/{date}")
     public List<Event> getevent(@PathVariable Long id,@PathVariable Date date) throws IOException {
         List<Event> events=eventServices.geteventsByDateId(date,id);
@@ -39,17 +43,20 @@ public class EventController {
     public ResponseEntity createevent(@RequestBody Map<Object, Object> payLoad) throws URISyntaxException {
         Event event=new Event();
         try{
-            event=eventServices.geteventById((long)payLoad.get("id"));
+            event=eventServices.geteventById(Long.parseLong(String.valueOf(Integer.parseInt(String.valueOf((Integer)payLoad.get("id"))))));
         }
         catch(Exception e){
 
         }
-
+        Long id= Long.valueOf((Integer)payLoad.get("userId"));
+        User user=userServices.getuserById(id);
+        id= Long.valueOf((Integer)payLoad.get("categoryId"));
+        Category category=categoryServices.getcategoryById(id);
         event.setDescription(jasyptConfig.encryptor().encrypt((String)payLoad.get("description")));
-
+        event.setUser(user);
         event.setName((String)payLoad.get("name"));
-        event.setDateOfEvent((Date)payLoad.get("dateOfEvent"));
-        Category category=categoryServices.getcategoryById((long)payLoad.get("categoryId"));
+        event.setDateOfEvent(Date.valueOf((String)payLoad.get("dateOfEvent")));
+
         event.setCategory(category);
         eventServices.saveevent(event);
         return ResponseEntity.ok().build();
@@ -59,4 +66,5 @@ public class EventController {
         eventServices.removeevent(id);
         return ResponseEntity.ok().build();
     }
+
 }

@@ -11,7 +11,8 @@ public class CategoryServices {
     @Autowired
    CategoryRepository categoryRepository;
     public Category getcategoryById(long id){
-        return categoryRepository.getReferenceById(id);
+        Category category=categoryRepository.findById(id+1).get();
+        return category;
     }
     public void savecategory(Category category){
         categoryRepository.save(category);
